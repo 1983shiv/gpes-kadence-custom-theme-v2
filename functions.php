@@ -745,6 +745,63 @@ function get_variation_data($variation_id) {
 // woocommerce_add_cart_item_data 
 function add_variations_to_cart_v2() {
     // die('Function called');
+
+    $custom_options = array(
+        'print_area' => isset($_POST['custom_print_area']) ? $_POST['custom_print_area'] : array(),
+        'base_color' => isset($_POST['custom_base_color']) ? $_POST['custom_base_color'] : array(),
+        'where_we_print' => isset($_POST['where_we_print']) ? $_POST['where_we_print'] : '',
+        'sizes' => array(),
+          'file_names' => array(),
+    );
+
+    if (isset($_POST['custom_print_area_centerfront_file_hidden'])) {
+        $custom_options['custom_print_area_centerfront_file'] = sanitize_text_field($_POST['custom_print_area_centerfront_file_hidden']);
+    }
+    if (isset($_POST['custom_print_area_centerback_file_hidden'])) {
+        $custom_options['custom_print_area_centerback_file'] = sanitize_text_field($_POST['custom_print_area_centerback_file_hidden']);
+    }
+    if (isset($_POST['custom_print_area_leftsleeve_file_hidden'])) {
+        $custom_options['custom_print_area_leftsleeve_file'] = sanitize_text_field($_POST['custom_print_area_leftsleeve_file_hidden']);
+    }
+    if (isset($_POST['custom_print_area_rightsleeve_file_hidden'])) {
+        $custom_options['custom_print_area_rightsleeve_file'] = sanitize_text_field($_POST['custom_print_area_rightsleeve_file_hidden']);
+    }
+    if (isset($_POST['custom_print_area_leftchest_file_hidden'])) {
+        $custom_options['custom_print_area_leftchest_file'] = sanitize_text_field($_POST['custom_print_area_leftchest_file_hidden']);
+    }
+    if (isset($_POST['custom_print_area_rightchest_file_hidden'])) {
+        $custom_options['custom_print_area_rightchest_file'] = sanitize_text_field($_POST['custom_print_area_rightchest_file_hidden']);
+    }
+
+    if (isset($_POST['custom_print_area_customposition_file_hidden'])) {
+        $custom_options['custom_print_area_customposition_file'] = sanitize_text_field($_POST['custom_print_area_customposition_file_hidden']);
+    }
+
+    if (isset($_POST['custom_print_area_allover_file_hidden'])) {
+        $custom_options['custom_print_area_allover_file'] = sanitize_text_field($_POST['custom_print_area_allover_file_hidden']);
+    }
+    // $quantity = $cart_item_data['quantity'];
+    // foreach ($cart_data as $cart_item) {
+    //     if (isset($cart_item['quantity'])) {
+    //         $quantity = $cart_item['quantity'];
+    //     }
+    // }
+    if (isset($_POST['custom_hidden_field_for_qty'])) {
+        $custom_options['total_qty'] = sanitize_text_field($_POST['custom_hidden_field_for_qty']);
+    } else {
+        $custom_options['total_qty'] = $cart_item_data['quantity'];
+    }
+
+    $cart_item_data['custom_options'] = $custom_options;
+    if (isset($_POST['custom_hidden_field'])) {
+        $cart_item_data['custom_temp_price'] = sanitize_text_field($_POST['custom_hidden_field']);
+    }
+    // Calculate and set the total quantity for the cart item based on selected sizes
+
+    if (isset($_POST['custom_hidden_field_for_qty'])) {
+        $cart_item_data['quantity'] = sanitize_text_field($_POST['custom_hidden_field_for_qty']);
+    }
+
     // Check if the add to cart button is clicked
     if (isset($_POST['add-to-cart']) && isset($_POST['custom_hidden_field'])) {
         // Retrieve the variation data from the hidden input
@@ -754,9 +811,11 @@ function add_variations_to_cart_v2() {
         foreach ($variation_data as $variation_id => $qty) {
             // Ensure the quantity is greater than 0
             if ($qty > 0 && $variation_id !== 'undefined') {
-                WC()->cart->add_to_cart($_POST['product_id'], $qty, $variation_id, get_variation_data($variation_id), []);
+                WC()->cart->add_to_cart($_POST['product_id'], $qty, $variation_id, get_variation_data($variation_id), $cart_item_data);
             }
         }
+
+        
 
         // Add custom message
         wc_add_notice(__('Product successfully added to your cart.', 'your-text-domain'), 'success');
