@@ -754,11 +754,12 @@ function add_variations_to_cart_v2() {
         foreach ($variation_data as $variation_id => $qty) {
             // Ensure the quantity is greater than 0
             if ($qty > 0 && $variation_id !== 'undefined') {
-                // Add variation to the cart
-                // var_dump($_POST['product_id'], $qty, $variation_id);
                 WC()->cart->add_to_cart($_POST['product_id'], $qty, $variation_id, get_variation_data($variation_id), []);
             }
         }
+
+        // Add custom message
+        wc_add_notice(__('Product successfully added to your cart.', 'your-text-domain'), 'success');
     }
 }
 
@@ -779,6 +780,15 @@ function add_variations_to_cart() {
             }
         }
     }
+}
+
+
+// Redirect to cart page after adding product to cart
+add_filter('woocommerce_add_to_cart_redirect', 'custom_add_to_cart_redirect');
+
+function custom_add_to_cart_redirect($url) {
+    $url = wc_get_cart_url(); // Redirect to the cart page
+    return $url;
 }
 
 // WC_Cart->add_to_cart( $product_id = 31308, $quantity = 1, $variation_id = 31316, $variation = ['attribute_talla' => 'XS', 'attribute_color' => 'Navy-White'], $cart_item_data = ??? )
