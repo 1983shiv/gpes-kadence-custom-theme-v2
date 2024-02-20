@@ -1,0 +1,253 @@
+
+/*
+button.single_add_to_cart_button.button.alt {
+    display: none !important;
+}
+*/
+
+/* Hide the actual checkbox */
+/* .custom-options-printarea input[type="checkbox"],
+.custom-options-basecolor input[type="checkbox"] {
+    display: none;
+} */
+
+/* Style the label when checkbox is checked */
+/* .custom-options-printarea input[type="checkbox"]:checked + label,
+.custom-options-basecolor input[type="checkbox"]:checked + label {
+    font-weight: bold;
+		background-color: #f4f4f4 !important;
+		padding: 10px 20px !important;
+}
+ */
+ /* Hide the actual checkbox */
+.custom-options-printarea input[type="checkbox"],
+.custom-options-basecolor input[type="checkbox"] {
+    display: none;
+}
+
+ .woocommerce-checkout #inner-wrap {
+    padding: 120px;
+}
+
+.custom-options-color-container{
+    display: none;
+}
+
+ /* .custom-options-color-container {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+} */
+/* Style the file upload labels
+.custom-options-sizes,
+.custom-options-color-container,
+.custom-options-sizes-clr{
+    display: none;
+    margin: 20px 0;
+}
+*/
+
+.custom-options-sizes-heading{
+    font-weight: 600;
+    font-style: italic;
+}
+.custom-options-size-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.custom-options-size-row label {
+    display: flex;
+    margin-left: 4px;
+}
+
+.custom-options-color-container {
+    box-shadow: 0px 0px 4px 0px #f4f4f4;
+    margin: 20px 0;
+    padding: 10px 8px;
+    flex-direction: column;
+}
+
+.custom-options-size-row label {
+    font-size: 12px;
+}
+
+.custom-options-size-row input {
+    width: 60px;
+    padding: 2px;
+    margin: 4px;
+}
+
+.custom-options-sizes input,
+.custom-options-sizes-clr input{
+    width: 90%;
+}
+.hidden-uploads{
+    display: none;
+}  
+
+/* Style the checkbox inputs */
+.custom-options-printarea label
+{
+    display: inline-block;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.custom-options-basecolor label {
+    display: inline-flex;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.custom-options-printarea-upload label {
+    display: block;
+    margin-top: 10px;
+}
+
+.custom-options-printarea,
+.custom-options-basecolor{
+    display: flex;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+.custom-options-printarea label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 8px;
+}
+
+
+.size-text-wht,
+.size-text-clr{
+    font-weight: bold;
+}
+
+
+.custom-options-sizes-clr,
+.size-text-clr{
+    display: none;
+}
+.size-text-wht,
+.size-text-clr{
+    margin-bottom: -16px !important;
+}
+
+.custom-options-printarea-upload {
+    margin: 10px 0;
+}
+
+
+
+.custom-options-printarea label.checked{
+    background-color: #FF4C00;
+    color: #fff;
+    font-size: 9px;
+    padding: 5px;
+    text-align: center;
+    border-radius: 6%;
+    opacity: 0.8;
+}
+
+.custom-options-basecolor label.checked{
+    background-color: #FF4C00;
+    color: #fff;
+    font-size: 12px;
+	padding: 2px 2px;
+    border-radius: 4px;
+}
+
+.label-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.label-container label {
+  flex: 0 0 calc(20% - 10px); /* 20% width with some spacing */
+  margin-right: 10px; /* Adjust as needed for spacing between labels */
+  margin-bottom: 10px; /* Adjust as needed for spacing between rows */
+  text-align: center; /* Centers content horizontally */
+}
+
+.circle-container {
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    border-radius: 50%; /* Makes it a circle */
+    overflow: hidden; /* Clip content outside the circle */
+  }
+
+  .circle-container img {
+    width: 100%;
+    height: auto;
+    display: flex; /* Removes any extra spacing */
+  }
+
+/* .single-product table.variations {
+    display: none !important;
+} */
+
+.woocommerce div.product form.cart .variations,
+.single-product p.price,
+.single-product span.woocommerce-Price-amount.amount{
+    display: none;
+}
+
+#ship-to-different-address{
+	display: none;
+}
+
+/* tr.cart_item input.input-text.qty {
+    display: none;
+}
+
+div.kadence-woo-cart-form-wrap > form > table > thead > tr > th.product-quantity {
+    display: none;
+}
+
+.woocommerce-order-received li.woocommerce-order-overview__total.total {
+    display: none;
+}
+
+.woocommerce-cart .cart-collaterals {
+    display: none;
+} */
+
+
+/* category filter box transition */
+.ddd{
+box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+}
+
+.custom-options-general {
+    margin-top: 20px;
+}
+.custom-options-general label {
+    font-size: 16px;
+    font-weight: bold;
+}
+.custom-options-printarea-upload h4 {
+    font-size: 16px;
+    border-bottom: 1px solid #f4f4f4;
+}
+.custom-options-general .custom_print_area_centerfront, 
+.custom-options-general .custom_print_area_centerback {
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid #f4f4f4;
+    margin: 4px;
+    padding: 10px 4px;
+}
+.single_variation_wrap h4 {
+    font-size: 16px;
+    border-bottom: 1px solid #f4f4f4;
+    margin-top: 30px;
+}
+.custom-options-printarea label {
+    width: 80px;
+    margin: 5px;
+}
+
+@media only screen and (min-width: 800px){
+    /*  */
+}

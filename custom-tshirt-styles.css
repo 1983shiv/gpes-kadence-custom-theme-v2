@@ -1,0 +1,3 @@
+.woocommerce div.product form.cart div.quantity { display: none !important; }
+.woocommerce-variation-price { display: none; };
+.woocommerce div.product span.price, .woocommerce div.product p.price { display: none; };
