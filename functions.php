@@ -760,6 +760,8 @@ function add_variations_to_cart_v2() {
 
         // Add custom message
         wc_add_notice(__('Product successfully added to your cart.', 'your-text-domain'), 'success');
+        wp_safe_redirect(wc_get_cart_url());
+        exit; // Make sure to exit after redirecting
     }
 }
 
