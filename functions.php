@@ -722,139 +722,11 @@ add_action('woocommerce_before_add_to_cart_button', 'display_custom_product_opti
 
 // add_action('woocommerce_add_cart_item_data', 'add_variations_to_cart');
 
-add_action('woocommerce_add_to_cart_validation', 'add_variations_to_cart_v2');
 
-// Get variation data using variation ID
-function get_variation_data($variation_id) {
-    // Get variation object
-    $variation = wc_get_product_variation_attributes($variation_id);
-
-    // Check if variation exists
-    if ($variation) {
-        // Extract variation attributes
-        $attributes = array();
-        foreach ($variation as $attribute => $value) {
-            $attributes[$attribute] = $value;
-        }
-        return $attributes;
-    } else {
-        return false; // Variation not found
-    }
-}
-
-// woocommerce_add_cart_item_data 
-function add_variations_to_cart_v2() {
-    // die('Function called');
-
-    $custom_options = array(
-        'print_area' => isset($_POST['custom_print_area']) ? $_POST['custom_print_area'] : array(),
-        'base_color' => isset($_POST['custom_base_color']) ? $_POST['custom_base_color'] : array(),
-        'where_we_print' => isset($_POST['where_we_print']) ? $_POST['where_we_print'] : '',
-        'sizes' => array(),
-          'file_names' => array(),
-    );
-
-    if (isset($_POST['custom_print_area_centerfront_file_hidden'])) {
-        $custom_options['custom_print_area_centerfront_file'] = sanitize_text_field($_POST['custom_print_area_centerfront_file_hidden']);
-    }
-    if (isset($_POST['custom_print_area_centerback_file_hidden'])) {
-        $custom_options['custom_print_area_centerback_file'] = sanitize_text_field($_POST['custom_print_area_centerback_file_hidden']);
-    }
-    if (isset($_POST['custom_print_area_leftsleeve_file_hidden'])) {
-        $custom_options['custom_print_area_leftsleeve_file'] = sanitize_text_field($_POST['custom_print_area_leftsleeve_file_hidden']);
-    }
-    if (isset($_POST['custom_print_area_rightsleeve_file_hidden'])) {
-        $custom_options['custom_print_area_rightsleeve_file'] = sanitize_text_field($_POST['custom_print_area_rightsleeve_file_hidden']);
-    }
-    if (isset($_POST['custom_print_area_leftchest_file_hidden'])) {
-        $custom_options['custom_print_area_leftchest_file'] = sanitize_text_field($_POST['custom_print_area_leftchest_file_hidden']);
-    }
-    if (isset($_POST['custom_print_area_rightchest_file_hidden'])) {
-        $custom_options['custom_print_area_rightchest_file'] = sanitize_text_field($_POST['custom_print_area_rightchest_file_hidden']);
-    }
-
-    if (isset($_POST['custom_print_area_customposition_file_hidden'])) {
-        $custom_options['custom_print_area_customposition_file'] = sanitize_text_field($_POST['custom_print_area_customposition_file_hidden']);
-    }
-
-    if (isset($_POST['custom_print_area_allover_file_hidden'])) {
-        $custom_options['custom_print_area_allover_file'] = sanitize_text_field($_POST['custom_print_area_allover_file_hidden']);
-    }
-    // $quantity = $cart_item_data['quantity'];
-    // foreach ($cart_data as $cart_item) {
-    //     if (isset($cart_item['quantity'])) {
-    //         $quantity = $cart_item['quantity'];
-    //     }
-    // }
-    if (isset($_POST['custom_hidden_field_for_qty'])) {
-        $custom_options['total_qty'] = sanitize_text_field($_POST['custom_hidden_field_for_qty']);
-    } else {
-        $custom_options['total_qty'] = $cart_item_data['quantity'];
-    }
-
-    $cart_item_data['custom_options'] = $custom_options;
-    if (isset($_POST['custom_hidden_field'])) {
-        $cart_item_data['custom_temp_price'] = sanitize_text_field($_POST['custom_hidden_field']);
-    }
-    // Calculate and set the total quantity for the cart item based on selected sizes
-
-    if (isset($_POST['custom_hidden_field_for_qty'])) {
-        $cart_item_data['quantity'] = sanitize_text_field($_POST['custom_hidden_field_for_qty']);
-    }
-
-    // Check if the add to cart button is clicked
-    if (isset($_POST['add-to-cart']) && isset($_POST['custom_hidden_field'])) {
-        // Retrieve the variation data from the hidden input
-        $variation_data = json_decode(stripslashes($_POST['custom_hidden_field']), true);
-
-        // Loop through each variation data
-        foreach ($variation_data as $variation_id => $qty) {
-            // Ensure the quantity is greater than 0
-            if ($qty > 0 && $variation_id !== 'undefined') {
-                WC()->cart->add_to_cart($_POST['product_id'], $qty, $variation_id, get_variation_data($variation_id), $cart_item_data);
-            }
-        }
-
-        
-
-        // Add custom message
-        wc_add_notice(__('Product successfully added to your cart.', 'your-text-domain'), 'success');
-        wp_safe_redirect(wc_get_cart_url());
-        exit; // Make sure to exit after redirecting
-    }
-}
-
-function add_variations_to_cart() {
-    // die('Function called');
-    // Check if the add to cart button is clicked
-    if (isset($_POST['add-to-cart']) && isset($_POST['custom_hidden_field'])) {
-        // Retrieve the variation data from the hidden input
-        $variation_data = json_decode(stripslashes($_POST['custom_hidden_field']), true);
-
-        // Loop through each variation data
-        foreach ($variation_data as $variation_id => $qty) {
-            // Ensure the quantity is greater than 0
-            if ($qty > 0 && $variation_id !== 'undefined') {
-                // Add variation to the cart
-                // var_dump($_POST['product_id'], $qty, $variation_id);
-                WC()->cart->add_to_cart($_POST['product_id'], $qty, $variation_id, get_variation_data($variation_id), []);
-            }
-        }
-    }
-}
-
-
-// Redirect to cart page after adding product to cart
-add_filter('woocommerce_add_to_cart_redirect', 'custom_add_to_cart_redirect');
-
-function custom_add_to_cart_redirect($url) {
-    $url = wc_get_cart_url(); // Redirect to the cart page
-    return $url;
-}
 
 // WC_Cart->add_to_cart( $product_id = 31308, $quantity = 1, $variation_id = 31316, $variation = ['attribute_talla' => 'XS', 'attribute_color' => 'Navy-White'], $cart_item_data = ??? )
 // Hook to add custom options to cart item data
-// add_filter('woocommerce_add_cart_item_data', 'add_custom_options_to_cart_item_data', 20, 3);
+add_filter('woocommerce_add_cart_item_data', 'add_custom_options_to_cart_item_data', 20, 3);
 
 // add_filter('woocommerce_add_cart_item_data', 'add_data_to_cart', 20, 3);
 
@@ -921,6 +793,7 @@ function add_data_to_cart_v2($cart_item_key, $product_id, $quantity, $variation_
 function add_custom_options_to_cart_item_data($cart_item_data, $product_id, $variation_id) {
     // Process and store custom options here
     // var_dump($_POST['custom_base_color']);
+    die('Function called by woocommerce_add_cart_item_data ');
     $custom_options = array(
         'print_area' => isset($_POST['custom_print_area']) ? $_POST['custom_print_area'] : array(),
         'base_color' => isset($_POST['custom_base_color']) ? $_POST['custom_base_color'] : array(),
@@ -982,27 +855,26 @@ function add_custom_options_to_cart_item_data($cart_item_data, $product_id, $var
     if (isset($_POST['custom_print_area_allover_file_hidden'])) {
         $custom_options['custom_print_area_allover_file'] = sanitize_text_field($_POST['custom_print_area_allover_file_hidden']);
     }
-    // $quantity = $cart_item_data['quantity'];
-    // foreach ($cart_data as $cart_item) {
-    //     if (isset($cart_item['quantity'])) {
-    //         $quantity = $cart_item['quantity'];
-    //     }
+
+
+    // var_dump($cart_item_data);
+    // var_dump($custom_options);
+    $cart_item_data = isset($cart_item_data) && is_array($cart_item_data) ? $cart_item_data : array();
+    $cart_item_data['custom_options'] = array($custom_options);
+    // Make sure $cart_item_data is initialized as an array
+    
+
+    // // var_dump($custom_options);
+    // // Set custom options within $cart_item_data
+    // $cart_item_data['custom_options'] = $custom_options;
+    // if (isset($_POST['custom_hidden_field'])) {
+    //     $cart_item_data['custom_temp_price'] = sanitize_text_field($_POST['custom_hidden_field']);
     // }
-    if (isset($_POST['custom_hidden_field_for_qty'])) {
-        $custom_options['total_qty'] = sanitize_text_field($_POST['custom_hidden_field_for_qty']);
-    } else {
-        $custom_options['total_qty'] = $cart_item_data['quantity'];
-    }
+    // // Calculate and set the total quantity for the cart item based on selected sizes
 
-    $cart_item_data['custom_options'] = $custom_options;
-    if (isset($_POST['custom_hidden_field'])) {
-        $cart_item_data['custom_temp_price'] = sanitize_text_field($_POST['custom_hidden_field']);
-    }
-    // Calculate and set the total quantity for the cart item based on selected sizes
-
-    if (isset($_POST['custom_hidden_field_for_qty'])) {
-        $cart_item_data['quantity'] = sanitize_text_field($_POST['custom_hidden_field_for_qty']);
-    }
+    // if (isset($_POST['custom_hidden_field_for_qty'])) {
+    //     $cart_item_data['quantity'] = sanitize_text_field($_POST['custom_hidden_field_for_qty']);
+    // }
     
     // var_dump($custom_options);
     return $cart_item_data;
@@ -1052,6 +924,85 @@ function add_custom_options_to_cart_item_data_v2($cart_item_data, $product_id, $
     
     return $cart_item_data;
 }
+
+
+add_action('woocommerce_add_to_cart_validation', 'add_variations_to_cart_v2', 20, 1);
+
+// Get variation data using variation ID
+function get_variation_data($variation_id) {
+    // Get variation object
+    $variation = wc_get_product_variation_attributes($variation_id);
+
+    // Check if variation exists
+    if ($variation) {
+        // Extract variation attributes
+        $attributes = array();
+        foreach ($variation as $attribute => $value) {
+            $attributes[$attribute] = $value;
+        }
+        return $attributes;
+    } else {
+        return false; // Variation not found
+    }
+}
+
+// woocommerce_add_cart_item_data 
+function add_variations_to_cart_v2($cart_item_data) {
+    die('Function called by woocommerce_add_to_cart_validation ');
+    var_dump($cart_item_data);
+    // Check if the add to cart button is clicked
+    if (isset($_POST['add-to-cart']) && isset($_POST['custom_hidden_field'])) {
+
+        
+
+        // Retrieve the variation data from the hidden input
+        $variation_data = json_decode(stripslashes($_POST['custom_hidden_field']), true);
+
+        // Loop through each variation data
+        foreach ($variation_data as $variation_id => $qty) {
+            // Ensure the quantity is greater than 0
+            if ($qty > 0 && $variation_id !== 'undefined') {
+                WC()->cart->add_to_cart($_POST['product_id'], $qty, $variation_id, get_variation_data($variation_id), $cart_item_data);
+            }
+        }
+
+        
+
+        // Add custom message
+        wc_add_notice(__('Product successfully added to your cart.', 'your-text-domain'), 'success');
+        wp_safe_redirect(wc_get_cart_url());
+        exit; // Make sure to exit after redirecting
+    }
+}
+
+function add_variations_to_cart() {
+    // die('Function called');
+    // Check if the add to cart button is clicked
+    if (isset($_POST['add-to-cart']) && isset($_POST['custom_hidden_field'])) {
+        // Retrieve the variation data from the hidden input
+        $variation_data = json_decode(stripslashes($_POST['custom_hidden_field']), true);
+
+        // Loop through each variation data
+        foreach ($variation_data as $variation_id => $qty) {
+            // Ensure the quantity is greater than 0
+            if ($qty > 0 && $variation_id !== 'undefined') {
+                // Add variation to the cart
+                // var_dump($_POST['product_id'], $qty, $variation_id);
+                WC()->cart->add_to_cart($_POST['product_id'], $qty, $variation_id, get_variation_data($variation_id), []);
+            }
+        }
+    }
+}
+
+
+// Redirect to cart page after adding product to cart
+add_filter('woocommerce_add_to_cart_redirect', 'custom_add_to_cart_redirect');
+
+function custom_add_to_cart_redirect($url) {
+    $url = wc_get_cart_url(); // Redirect to the cart page
+    return $url;
+}
+
 
 function getDownloadlink($file_name, $area){
     // $file_path = wp_get_upload_dir()['basedir'] . '/customerDesign/' . $file_name; // Update with your upload directory
